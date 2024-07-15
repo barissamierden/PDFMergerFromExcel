@@ -4,7 +4,26 @@ using PDFMerger.Services.Concretes;
 using PDFMerger.Services.Interfaces;
 using System.Net.Http.Headers;
 
+var inCorrectTryCounter = 0;
+
 retry:
+
+if (inCorrectTryCounter > 0)
+{
+
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"Remaining retries: {5 - inCorrectTryCounter}");
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine("");
+
+    if (inCorrectTryCounter == 5) 
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Too many incorrect retries! Application is shutting down!");
+        Console.ForegroundColor = ConsoleColor.White;
+        return;
+    }
+}
 
 var controller = new Controller();
 
@@ -16,7 +35,7 @@ if (!string.IsNullOrWhiteSpace(userName))
     Console.Write("Password: ");
     var password = controller.GetConsolePassword();
 
-    if (!string.IsNullOrWhiteSpace(password))
+    if (password != null)
     {
         IUserService userService = new UserService();
 
@@ -45,7 +64,13 @@ if (!string.IsNullOrWhiteSpace(userName))
             Console.WriteLine("Incorrect credentials! Please try again!");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("");
+            inCorrectTryCounter++;
             goto retry;
         }
     }
+}
+else
+{
+    Console.Clear();
+    goto retry;
 }
