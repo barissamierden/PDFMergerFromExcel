@@ -1,20 +1,51 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using PDFMerger;
 using PDFMerger.Services.Concretes;
 using PDFMerger.Services.Interfaces;
+using System.Net.Http.Headers;
 
-Console.WriteLine("This application merges every 51 pdf files by order which are given by an excel file.");
+retry:
 
-await Run();
+var controller = new Controller();
 
+Console.Write("UserName: ");
+var userName = Console.ReadLine();
 
-async Task Run()
+if (!string.IsNullOrWhiteSpace(userName))
 {
-    IPDFService PDFService = new PDFService();
-    Application excelApp = new Application();
+    Console.Write("Password: ");
+    var password = controller.GetConsolePassword();
 
-    Console.Write("Please enter the excel files path: ");
-    var excelFilePath = Console.ReadLine();
+    if (!string.IsNullOrWhiteSpace(password))
+    {
+        IUserService userService = new UserService();
 
-    if (!string.IsNullOrWhiteSpace(excelFilePath))
-        await PDFService.Merge(excelApp, excelFilePath);
+        var result = await userService.ValidateUser(userName, password);
+
+        if (result)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("You have successfully logged in!");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine("");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("This application merges every 51 pdf files by order which are given by an excel file.");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine("");
+
+            await controller.Run();
+        }
+        else
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Incorrect credentials! Please try again!");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("");
+            goto retry;
+        }
+    }
 }
