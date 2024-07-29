@@ -4,6 +4,9 @@ using PDFMerger.Services.Concretes;
 using PDFMerger.Services.Interfaces;
 using System.Net.Http.Headers;
 
+Console.BackgroundColor = ConsoleColor.DarkGray;
+Console.Clear();
+
 var inCorrectTryCounter = 0;
 
 retry:

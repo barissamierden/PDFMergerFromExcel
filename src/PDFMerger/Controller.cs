@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using PDFMerger.Models;
 using PDFMerger.Services.Concretes;
 using PDFMerger.Services.Interfaces;
 using System;
@@ -15,13 +16,38 @@ namespace PDFMerger
         public async Task Run()
         {
             IPDFService pdfService = new PDFService();
-            Application excelApp = new Application();
+            Application? excelApp = null;
 
-            Console.Write("Please enter the excel files path: ");
-            var excelFilePath = Console.ReadLine();
+        retry:
+            Console.WriteLine("Please choose a file path source below:");
+            Console.WriteLine("   1. From an Excel file");
+            Console.WriteLine("   2. From directory path");
 
-            if (!string.IsNullOrWhiteSpace(excelFilePath))
-                await pdfService.Merge(excelApp, excelFilePath);
+            var selectedFileSourceKey = Console.ReadKey(true).KeyChar;
+
+            if (selectedFileSourceKey != '1' && selectedFileSourceKey != '2')
+            {
+                Console.Clear();
+
+                goto retry;
+            }
+
+            Console.Clear();
+
+            if (selectedFileSourceKey == '1')
+            {
+                excelApp = new Application();
+                Console.Write("Please enter the Excel file path: ");
+            }
+            else
+            {
+                Console.Write("Please enter the directory path: ");
+            }
+
+            var path = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(path))
+                await pdfService.Merge(excelApp, path.Trim().Replace("\"", ""), (SourceType)(Convert.ToInt32((selectedFileSourceKey).ToString())));
         }
 
         public string GetConsolePassword()
