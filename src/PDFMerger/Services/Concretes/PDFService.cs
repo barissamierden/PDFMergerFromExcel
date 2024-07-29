@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using Microsoft.Office.Interop;
+using Microsoft.Office.Interop.Excel;
 using PDFMerger.Models;
 using PDFMerger.Services.Interfaces;
 using PdfSharp.Pdf;
@@ -20,12 +21,16 @@ namespace PDFMerger.Services.Concretes
 
             if (sourceType == SourceType.Excel)
             {
+                // Excel ile sağlanan veriler ile pdf dosyalarını 51 er şekilde birleştirir.
                 BuildPdfsByExcel(excelApp, path);
             }
             else if (sourceType == SourceType.Directory)
             {
-                BuildPdfsByDirectory(path);
+                // Her bir directory içerisinde bulunan pdfleri 51 er şekilde birleştirip olduğu directorye kaydeder.
+                BuildPdfsByDirectory(excelApp, path);
             }
+
+            //BuildExcelFileOfPdfFilePaths(excelApp, path); // Verilen path içerisine yine verilen path içerisindeki Pdf dosyalarının yollarını içeren bir excel dosyarı oluşturur.
 
             sw.Stop();
 
@@ -44,13 +49,13 @@ namespace PDFMerger.Services.Concretes
 
             var outputText = "Total Elapsed Time: " + (sw.ElapsedMilliseconds).ToString() + " ms";
             Console.SetCursorPosition((Console.WindowWidth - outputText.Length) / 2, Console.CursorTop);
-            
+
             Console.ForegroundColor = ConsoleColor.Green;
             await Console.Out.WriteLineAsync(outputText);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        private void BuildPdfsByDirectory(string path)
+        private List<string> GetAllChildDirectories(string path)
         {
             List<string> directoryPathsToExplore = new() { path };
 
@@ -58,7 +63,7 @@ namespace PDFMerger.Services.Concretes
 
             List<string> directoryPaths = new() { path };
 
-            again:
+        again:
 
             foreach (var directoryPathToExplore in directoryPathsToExplore)
             {
@@ -75,6 +80,48 @@ namespace PDFMerger.Services.Concretes
 
                 goto again;
             }
+
+            return directoryPaths;
+        }
+
+        private void BuildExcelFileOfPdfFilePaths(Application? excelApp, string path)
+        {
+            List<string> pdfFilePaths = new();
+
+            var directoryPaths = GetAllChildDirectories(path);
+
+            foreach (var directoryPath in directoryPaths)
+            {
+                List<PdfDocument> pdfDocuments = new();
+
+                var pdfFilePathsArr = GetPdfFilesByDirectoryPath(directoryPath);
+
+                pdfFilePaths.AddRange(pdfFilePathsArr.ToList());
+            }
+
+            var excelFilePath = $"{path}\\Pdfs.xlsx";
+
+            excelApp.Visible = true;
+            excelApp.DisplayAlerts = false;
+            var workBook = (Microsoft.Office.Interop.Excel.Workbook)excelApp.Workbooks.Add();
+            var sheet = (Microsoft.Office.Interop.Excel.Worksheet)workBook.Worksheets.Add();
+            sheet.Name = "Pdfs";
+
+            foreach (var pdfFilePath in pdfFilePaths)
+            {
+                sheet.Cells[pdfFilePaths.IndexOf(pdfFilePath) + 1, 1] = pdfFilePath;
+            }
+
+            workBook.SaveAs(excelFilePath);
+            workBook.Close();
+            excelApp.DisplayAlerts = true;
+            excelApp.Quit();
+        }
+
+        private void BuildPdfsByDirectory(Application? excelApp, string path)
+        {
+
+            var directoryPaths = GetAllChildDirectories(path);
 
             foreach (var directoryPath in directoryPaths)
             {
@@ -99,7 +146,6 @@ namespace PDFMerger.Services.Concretes
                         CopyPages(pdfDocument, outPdf);
 
                         if (pdfCounter % 51 == 0 || pdfDocuments.IndexOf(pdfDocument) == pdfDocuments.Count - 1)
-                        //if (pdfDocuments.IndexOf(pdfDocument) != 0 && (pdfDocuments.IndexOf(pdfDocument) % 50 == 0 || pdfDocuments.IndexOf(pdfDocument) == pdfDocuments.Count - 1))
                         {
                             outPdf.Save(Path.Combine(directoryPath, $"MergedPdf{counter.ToString()}.pdf"));
                             counter++;
@@ -147,7 +193,6 @@ namespace PDFMerger.Services.Concretes
                 CopyPages(pdfDocument, outPdf);
 
                 if (pdfCounter % 51 == 0 || pdfDocuments.IndexOf(pdfDocument) == pdfDocuments.Count - 1)
-                //if (pdfDocuments.IndexOf(pdfDocument) != 0 && (pdfDocuments.IndexOf(pdfDocument) % 50 == 0 || pdfDocuments.IndexOf(pdfDocument) == pdfDocuments.Count - 1))
                 {
                     outPdf.Save($"{savePathsArr[counter - 1]}{pdfFileNamesArr[counter - 1]}.pdf");
                     counter++;

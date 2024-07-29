@@ -16,7 +16,7 @@ namespace PDFMerger
         public async Task Run()
         {
             IPDFService pdfService = new PDFService();
-            Application? excelApp = null;
+            Application? excelApp = new Application(); ;
 
         retry:
             Console.WriteLine("Please choose a file path source below:");
@@ -36,7 +36,6 @@ namespace PDFMerger
 
             if (selectedFileSourceKey == '1')
             {
-                excelApp = new Application();
                 Console.Write("Please enter the Excel file path: ");
             }
             else
