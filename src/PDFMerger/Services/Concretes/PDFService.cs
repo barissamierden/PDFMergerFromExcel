@@ -123,11 +123,15 @@ namespace PDFMerger.Services.Concretes
 
             var directoryPaths = GetAllChildDirectories(path);
 
+            var counter = 1;
+
             foreach (var directoryPath in directoryPaths)
             {
                 List<PdfDocument> pdfDocuments = new();
 
                 var pdfFilePathsArr = GetPdfFilesByDirectoryPath(directoryPath);
+
+                pdfFilePathsArr = pdfFilePathsArr.OrderBy(x => x).ToArray();
 
                 if (pdfFilePathsArr.Length > 0)
                 {
@@ -137,8 +141,7 @@ namespace PDFMerger.Services.Concretes
                     }
 
                     var pdfCounter = 1;
-                    var counter = 1;
-
+                    
                     var outPdf = new PdfDocument();
 
                     foreach (var pdfDocument in pdfDocuments)
@@ -147,7 +150,7 @@ namespace PDFMerger.Services.Concretes
 
                         if (pdfCounter % 51 == 0 || pdfDocuments.IndexOf(pdfDocument) == pdfDocuments.Count - 1)
                         {
-                            outPdf.Save(Path.Combine(directoryPath, $"MergedPdf{counter.ToString()}.pdf"));
+                            outPdf.Save(Path.Combine(path, $"{string.Join("_", directoryPath.Split("\\").Reverse().Skip(0).Take(2).Reverse().ToList())}.pdf"));
                             counter++;
                             outPdf = null;
                             outPdf = new PdfDocument();
