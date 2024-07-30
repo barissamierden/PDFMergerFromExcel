@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDFMerger.Services.Interfaces
+namespace PdfMerger.Data.Domain.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> ValidateUser(string userName, string password);
+        Task<bool> ValidateUserAsync(string userName, string password);
     }
 }

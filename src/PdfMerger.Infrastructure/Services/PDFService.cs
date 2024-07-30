@@ -1,21 +1,27 @@
-﻿using Microsoft.Office.Interop;
-using Microsoft.Office.Interop.Excel;
-using PDFMerger.Models;
-using PDFMerger.Services.Interfaces;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+﻿using PdfMerger.Data.Domain.Interfaces;
+using PdfMerger.Data.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Text;
+using System.Threading.Tasks;
+using PdfSharp.Pdf;
+using Microsoft.Office.Interop.Excel;
+using PdfSharp.Pdf.IO;
 
-namespace PDFMerger.Services.Concretes
+namespace PdfMerger.Infrastructure.Services
 {
     public class PDFService : IPDFService
     {
-        public async Task Merge(Application? excelApp, string path, SourceType sourceType)
+        public async Task MergeAsync(string path, SourceType sourceType)
         {
-            var sw = new Stopwatch();
+            //var sw = new Stopwatch();
 
-            sw.Start();
+            //sw.Start();
+
+            Application excelApp = new Application();
 
             List<PdfDocument> pdfDocuments = new();
 
@@ -32,27 +38,27 @@ namespace PDFMerger.Services.Concretes
 
             //BuildExcelFileOfPdfFilePaths(excelApp, path); // Verilen path içerisine yine verilen path içerisindeki Pdf dosyalarının yollarını içeren bir excel dosyarı oluşturur.
 
-            sw.Stop();
+            //sw.Stop();
 
-            Console.BackgroundColor = ConsoleColor.DarkGray;
+            //Console.BackgroundColor = ConsoleColor.DarkGray;
 
-            Console.Clear();
+            //Console.Clear();
 
-            var allDoneText = "ALL DONE";
-            Console.SetCursorPosition((Console.WindowWidth - allDoneText.Length) / 2, Console.CursorTop);
+            //var allDoneText = "ALL DONE";
+            //Console.SetCursorPosition((Console.WindowWidth - allDoneText.Length) / 2, Console.CursorTop);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            await Console.Out.WriteLineAsync(allDoneText);
-            Console.ForegroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //await Console.Out.WriteLineAsync(allDoneText);
+            //Console.ForegroundColor = ConsoleColor.White;
 
-            Console.WriteLine("");
+            //Console.WriteLine("");
 
-            var outputText = "Total Elapsed Time: " + (sw.ElapsedMilliseconds).ToString() + " ms";
-            Console.SetCursorPosition((Console.WindowWidth - outputText.Length) / 2, Console.CursorTop);
+            //var outputText = "Total Elapsed Time: " + (sw.ElapsedMilliseconds).ToString() + " ms";
+            //Console.SetCursorPosition((Console.WindowWidth - outputText.Length) / 2, Console.CursorTop);
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            await Console.Out.WriteLineAsync(outputText);
-            Console.ForegroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //await Console.Out.WriteLineAsync(outputText);
+            //Console.ForegroundColor = ConsoleColor.White;
         }
 
         private List<string> GetAllChildDirectories(string path)
@@ -141,7 +147,7 @@ namespace PDFMerger.Services.Concretes
                     }
 
                     var pdfCounter = 1;
-                    
+
                     var outPdf = new PdfDocument();
 
                     foreach (var pdfDocument in pdfDocuments)
@@ -178,7 +184,6 @@ namespace PDFMerger.Services.Concretes
             string?[] pdfFileNamesArr = pdfFileNameValues.OfType<object>().Select(o => o.ToString()).ToArray();
             System.Array savePathValues = (System.Array)savePathsColumn.Cells.Value;
             string?[] savePathsArr = savePathValues.OfType<object>().Select(o => o.ToString()).ToArray();
-
             List<PdfDocument> pdfDocuments = new();
 
             foreach (var pdfFilePath in pdfFilePathsArr)

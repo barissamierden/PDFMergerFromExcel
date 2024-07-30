@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFMerger", "PDFMerger\PDFMerger.csproj", "{B1A69624-8E96-4F32-8A4F-EE5E4B0989F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFMerger", "PDFMerger\PDFMerger.csproj", "{B1A69624-8E96-4F32-8A4F-EE5E4B0989F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfMerger.WinForm", "PdfMergeForm\PdfMerger.WinForm.csproj", "{773E860C-A956-48D3-B856-CA720A03C604}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfMerger.Infrastructure", "PdfMerger.Infrastructure\PdfMerger.Infrastructure.csproj", "{02740EBB-432C-4D16-83FA-052320A759CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfMerger.Data.Domain", "PdfMerger.Data.Domain\PdfMerger.Data.Domain.csproj", "{84959260-BF00-4BE3-98E3-1A6E6AEC7684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{B1A69624-8E96-4F32-8A4F-EE5E4B0989F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1A69624-8E96-4F32-8A4F-EE5E4B0989F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1A69624-8E96-4F32-8A4F-EE5E4B0989F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{773E860C-A956-48D3-B856-CA720A03C604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{773E860C-A956-48D3-B856-CA720A03C604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{773E860C-A956-48D3-B856-CA720A03C604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{773E860C-A956-48D3-B856-CA720A03C604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02740EBB-432C-4D16-83FA-052320A759CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02740EBB-432C-4D16-83FA-052320A759CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02740EBB-432C-4D16-83FA-052320A759CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02740EBB-432C-4D16-83FA-052320A759CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84959260-BF00-4BE3-98E3-1A6E6AEC7684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84959260-BF00-4BE3-98E3-1A6E6AEC7684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84959260-BF00-4BE3-98E3-1A6E6AEC7684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84959260-BF00-4BE3-98E3-1A6E6AEC7684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

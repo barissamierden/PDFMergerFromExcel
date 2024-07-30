@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using PdfMerger.Data.Domain.Interfaces;
+using PdfMerger.Infrastructure.Services;
 using PDFMerger;
-using PDFMerger.Services.Concretes;
-using PDFMerger.Services.Interfaces;
 using System.Net.Http.Headers;
 
 Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -42,7 +42,7 @@ if (!string.IsNullOrWhiteSpace(userName))
     {
         IUserService userService = new UserService();
 
-        var result = await userService.ValidateUser(userName, password);
+        var result = await userService.ValidateUserAsync(userName, password);
 
         if (result)
         {

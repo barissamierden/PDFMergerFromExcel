@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDFMerger.Models
+namespace PdfMerger.Data.Domain.Enums
 {
     public enum SourceType
     {

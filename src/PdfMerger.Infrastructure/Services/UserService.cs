@@ -1,15 +1,15 @@
-﻿using PDFMerger.Services.Interfaces;
+﻿using PdfMerger.Data.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDFMerger.Services.Concretes
+namespace PdfMerger.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        public async Task<bool> ValidateUser(string userName, string password)
+        public async Task<bool> ValidateUserAsync(string userName, string password)
         {
 
             using var client = new HttpClient();

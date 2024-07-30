@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
-using PDFMerger.Models;
-using PDFMerger.Services.Concretes;
-using PDFMerger.Services.Interfaces;
+using PdfMerger.Data.Domain.Enums;
+using PdfMerger.Data.Domain.Interfaces;
+using PdfMerger.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,6 @@ namespace PDFMerger
         public async Task Run()
         {
             IPDFService pdfService = new PDFService();
-            Application? excelApp = new Application(); ;
 
         retry:
             Console.WriteLine("Please choose a file path source below:");
@@ -46,7 +45,7 @@ namespace PDFMerger
             var path = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(path))
-                await pdfService.Merge(excelApp, path.Trim().Replace("\"", ""), (SourceType)(Convert.ToInt32((selectedFileSourceKey).ToString())));
+                await pdfService.MergeAsync(path.Trim().Replace("\"", ""), (SourceType)(Convert.ToInt32((selectedFileSourceKey).ToString())));
         }
 
         public string GetConsolePassword()
